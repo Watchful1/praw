@@ -94,6 +94,7 @@ them bound to an attribute of one of the PRAW models.
     other/commentforest
     other/commenthelper
     other/config
+    other/draftlist
     other/domainlisting
     other/emoji
     other/fullnamemixin
