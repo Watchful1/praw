@@ -137,6 +137,7 @@ class Objector:
         elif {"mod_action_data", "user_note_data"}.issubset(data):
             parser = self.parsers["modnote"]
         elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(data["created"]):
+            # kinda awkward. The mod notes create endpoint returns a json like {"created": {...note...
             data = data["created"]
             parser = self.parsers["modnote"]
         else:
