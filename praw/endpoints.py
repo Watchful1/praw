@@ -105,6 +105,7 @@ API_PATH = {
     "mentions":                "message/mentions",
     "message":                 "message/messages/{id}/",
     "messages":                "message/messages/",
+    "modnotes":                "/api/mod/notes",
     "moderated":               "user/{user}/moderated_subreddits/",
     "moderator_messages":      "r/{subreddit}/message/moderator/",
     "moderator_unread":        "r/{subreddit}/message/moderator/unread/",

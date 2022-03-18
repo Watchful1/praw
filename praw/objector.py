@@ -134,6 +134,11 @@ class Objector:
         elif {"mod_permissions", "name", "sr", "subscribers"}.issubset(data):
             data["display_name"] = data["sr"]
             parser = self.parsers[self._reddit.config.kinds["subreddit"]]
+        elif {"mod_action_data", "user_note_data"}.issubset(data):
+            parser = self.parsers["modnote"]
+        elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(data["created"]):
+            data = data["created"]
+            parser = self.parsers["modnote"]
         else:
             if "user" in data:
                 parser = self.parsers[self._reddit.config.kinds["redditor"]]

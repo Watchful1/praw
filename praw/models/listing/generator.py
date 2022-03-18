@@ -2,8 +2,10 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Dict, Iterator, Optional, Union
 
+import prawcore
+
 from ..base import PRAWBase
-from .listing import FlairListing
+from .listing import FlairListing, ModNoteListing
 
 if TYPE_CHECKING:  # pragma: no cover
     import praw
@@ -74,7 +76,12 @@ class ListingGenerator(PRAWBase, Iterator):
         if isinstance(self._listing, list):
             self._listing = self._listing[1]  # for submission duplicates
         elif isinstance(self._listing, dict):
-            self._listing = FlairListing(self._reddit, self._listing)
+            if FlairListing.CHILD_ATTRIBUTE in self._listing:
+                self._listing = FlairListing(self._reddit, self._listing)
+            elif ModNoteListing.CHILD_ATTRIBUTE in self._listing:
+                self._listing = ModNoteListing(self._reddit, self._listing)
+            else:
+                raise AttributeError()  # TODO find the right exception here
         self._list_index = 0
 
         if not self._listing:

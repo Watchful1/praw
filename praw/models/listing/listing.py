@@ -39,3 +39,16 @@ class ModeratorListing(Listing):
     """Special Listing for handling moderator lists."""
 
     CHILD_ATTRIBUTE = "moderators"
+
+
+class ModNoteListing(Listing):
+    """Special Listing for handling mod note lists."""
+
+    CHILD_ATTRIBUTE = "mod_notes"
+
+    @property
+    def after(self) -> Optional[Any]:
+        """Return the next attribute or None."""
+        if not getattr(self, "has_next_page", True):
+            return None
+        return getattr(self, "end_cursor", None)

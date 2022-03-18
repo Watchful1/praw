@@ -481,6 +481,7 @@ class Reddit:
             "modaction": models.ModAction,
             "moderator-list": models.ModeratorListing,
             "moderators": models.ModeratorsWidget,
+            "modnote": models.ModNote,
             "more": models.MoreComments,
             "post-flair": models.PostFlairWidget,
             "rule": models.Rule,
