@@ -76,12 +76,31 @@ class ListingGenerator(PRAWBase, Iterator):
         if isinstance(self._listing, list):
             self._listing = self._listing[1]  # for submission duplicates
         elif isinstance(self._listing, dict):
-            if FlairListing.CHILD_ATTRIBUTE in self._listing:
-                self._listing = FlairListing(self._reddit, self._listing)
-            elif ModNoteListing.CHILD_ATTRIBUTE in self._listing:
-                self._listing = ModNoteListing(self._reddit, self._listing)
+            # this scales better, but it still feels awkward for just two entries
+            classes = {
+                FlairListing.CHILD_ATTRIBUTE: FlairListing,
+                ModNoteListing.CHILD_ATTRIBUTE: ModNoteListing
+            }
+
+            for key, value in classes.items():
+                if key in self._listing:
+                    self._listing = value(self._reddit, self._listing)
+                    break
             else:
-                raise AttributeError()  # TODO find the right exception here
+                raise ValueError(
+                     "The generator returned a dictionary PRAW didn't recognize."
+                     " File a bug report at PRAW"
+                )
+
+            # if FlairListing.CHILD_ATTRIBUTE in self._listing:
+            #     self._listing = FlairListing(self._reddit, self._listing)
+            # elif ModNoteListing.CHILD_ATTRIBUTE in self._listing:
+            #     self._listing = ModNoteListing(self._reddit, self._listing)
+            # else:
+            #     raise ValueError(
+            #          "The generator returned a dictionary PRAW didn't recognize."
+            #          " File a bug report at PRAW"
+            #     )
         self._list_index = 0
 
         if not self._listing:

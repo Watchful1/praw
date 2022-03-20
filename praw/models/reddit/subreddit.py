@@ -2870,8 +2870,7 @@ class ModNotes:
         """TODO
         """
         Subreddit._safely_add_arguments(generator_kwargs, "params", subreddit=self.subreddit, user=redditor)
-        url = API_PATH["modnotes"]
-        return ListingGenerator(self.subreddit._reddit, url, **generator_kwargs)
+        return ListingGenerator(self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs)
 
     def __init__(self, subreddit: "praw.models.Subreddit"):
         """TODO
@@ -2887,23 +2886,16 @@ class ModNotes:
         **other_settings: Any
     ):
         """TODO
-
-        questions: label has to be one of "BOT_BAN, PERMA_BAN, BAN, ABUSE_WARNING, SPAM_WARNING, SPAM_WATCH, SOLID_CONTRIBUTOR, HELPFUL_USER"
-            should that be validated before sending?
-        reddit_id is a comment or submission fullname. Should we take in a comment/submission object here and grab the fullname from it? Or just have this field and let users pass the fullname manually
-        note itself has a max length of 250 characters. Should we check that before sending?
         """
         data = {"user": str(redditor), "subreddit": str(self.subreddit), "note": note, "label": label, "reddit_id": reddit_id}
         data.update(other_settings)
-        url = API_PATH["modnotes"]
-        return self.subreddit._reddit.post(url, data=data)
+        return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
 
     def remove(self, redditor: Union[str, "praw.models.Redditor"], note_id: str):
         """TODO
         """
         data = {"name": str(redditor), "note_id": note_id}
-        url = API_PATH["modnotes"]
-        self.subreddit._reddit.delete(url, data=data)
+        self.subreddit._reddit.delete(API_PATH["mod_notes"], data=data)
 
 
 class ContributorRelationship(SubredditRelationship):

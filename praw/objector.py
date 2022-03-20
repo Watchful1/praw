@@ -135,11 +135,15 @@ class Objector:
             data["display_name"] = data["sr"]
             parser = self.parsers[self._reddit.config.kinds["subreddit"]]
         elif {"mod_action_data", "user_note_data"}.issubset(data):
+            data["user"] = self._reddit.redditor(data["user"])
+            data["moderator"] = self._reddit.redditor(data["operator"])
+            data["subreddit"] = self._reddit.subreddit(data["subreddit"])
             parser = self.parsers["modnote"]
         elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(data["created"]):
             # kinda awkward. The mod notes create endpoint returns a json like {"created": {...note...
             data = data["created"]
-            parser = self.parsers["modnote"]
+            # recurse instead of duplicating the above user/moderator/subreddit stuff
+            return self._objectify_dict(data)
         else:
             if "user" in data:
                 parser = self.parsers[self._reddit.config.kinds["redditor"]]
