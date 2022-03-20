@@ -8,6 +8,7 @@ from .gildable import GildableMixin
 from .inboxable import InboxableMixin
 from .inboxtoggleable import InboxToggleableMixin
 from .messageable import MessageableMixin
+from .modnote import ModNoteMixin
 from .replyable import ReplyableMixin
 from .reportable import ReportableMixin
 from .savable import SavableMixin
@@ -295,5 +296,6 @@ class UserContentMixin(
     ReportableMixin,
     SavableMixin,
     VotableMixin,
+    ModNoteMixin,
 ):
     """A convenience mixin that applies to both Comments and Submissions."""
