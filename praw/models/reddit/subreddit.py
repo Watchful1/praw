@@ -422,6 +422,7 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
 
             for note in reddit.subreddit("redditdev").notes("spez"):
                 print(f"{note.label}: {note.user_note_data['note']}")
+
         """
         return ModNotes(self)
 
@@ -3355,7 +3356,7 @@ class Modmail:
 
 
 class ModNotes:
-    """Provides methods to interact with mod notes in a subreddit
+    """Provides methods to interact with mod notes in a subreddit.
 
     For example, notes for a user can be iterated through like so:
 
@@ -3364,9 +3365,9 @@ class ModNotes:
         for note in reddit.subreddit("redditdev").notes("spez"):
             print(f"{note.label}: {note.user_note_data['note']}")
 
-        .. note::
+    .. note::
 
-            The authenticated user must be a moderator of the subreddit.
+        The authenticated user must be a moderator of the subreddit.
 
     """
 
@@ -3375,14 +3376,18 @@ class ModNotes:
         redditor: Union[str, "praw.models.Redditor"],
         **generator_kwargs: Any,
     ) -> Iterator["praw.models.ModNote"]:
-        """Return a list of notes associated with a Redditor
+        """Return a list of notes associated with a Redditor.
 
-        :param redditor: The redditor to return notes on. This is required,
-        there is no method to get all notes in a subreddit.
+        :param redditor: The redditor to return notes on. This is required, there is no
+            method to get all notes in a subreddit.
 
         """
-        Subreddit._safely_add_arguments(generator_kwargs, "params", subreddit=self.subreddit, user=redditor)
-        return ListingGenerator(self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs)
+        Subreddit._safely_add_arguments(
+            generator_kwargs, "params", subreddit=self.subreddit, user=redditor
+        )
+        return ListingGenerator(
+            self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs
+        )
 
     def __init__(self, subreddit: "praw.models.Subreddit"):
         """Create a ModNotes instance.
@@ -3398,7 +3403,7 @@ class ModNotes:
         note: str,
         label: str = None,
         reddit_id: str = None,
-        **other_settings: Any
+        **other_settings: Any,
     ):
         """Add a note to a user in this subreddit.
 
@@ -3408,13 +3413,19 @@ class ModNotes:
             ``"BOT_BAN"``, ``"PERMA_BAN"``, ``"BAN"``, ``"ABUSE_WARNING"``,
             ``"SPAM_WARNING"``, ``"SPAM_WATCH"``, ``"SOLID_CONTRIBUTOR"``,
             ``"HELPFUL_USER"``.
-        :param reddit_id: The fullname of a comment or submission to associate
-            with the note. This starts with t1_ or t3_
+        :param reddit_id: The fullname of a comment or submission to associate with the
+            note. This starts with `t1_` or `t3_`
 
         :returns: The :class:`.ModNote` that was created.
 
         """
-        data = {"user": str(redditor), "subreddit": str(self.subreddit), "note": note, "label": label, "reddit_id": reddit_id}
+        data = {
+            "user": str(redditor),
+            "subreddit": str(self.subreddit),
+            "note": note,
+            "label": label,
+            "reddit_id": reddit_id,
+        }
         data.update(other_settings)
         return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
 

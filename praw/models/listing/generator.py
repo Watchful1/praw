@@ -2,8 +2,6 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any, Dict, Iterator, Optional, Union
 
-import prawcore
-
 from ..base import PRAWBase
 from .listing import FlairListing, ModNoteListing
 
@@ -76,10 +74,7 @@ class ListingGenerator(PRAWBase, Iterator):
         if isinstance(self._listing, list):
             self._listing = self._listing[1]  # for submission duplicates
         elif isinstance(self._listing, dict):
-            classes = [
-                FlairListing,
-                ModNoteListing
-            ]
+            classes = [FlairListing, ModNoteListing]
 
             for listing in classes:
                 if listing.CHILD_ATTRIBUTE in self._listing:
@@ -87,8 +82,8 @@ class ListingGenerator(PRAWBase, Iterator):
                     break
             else:
                 raise ValueError(
-                     "The generator returned a dictionary PRAW didn't recognize."
-                     " File a bug report at PRAW"
+                    "The generator returned a dictionary PRAW didn't recognize."
+                    " File a bug report at PRAW"
                 )
         self._list_index = 0
 

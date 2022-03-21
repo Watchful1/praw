@@ -139,7 +139,9 @@ class Objector:
             data["subreddit"] = self._reddit.subreddit(data["subreddit"])
             data["user"] = self._reddit.redditor(data["user"])
             parser = self.parsers["mod_note"]
-        elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(data["created"]):
+        elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(
+            data["created"]
+        ):
             data = data["created"]
             return self._objectify_dict(data)
         else:

@@ -108,9 +108,11 @@ them bound to an attribute of one of the PRAW models.
     other/listinggenerator
     other/menulink
     other/mod_action
+    other/mod_note
     other/moderatedlist
     other/modmail
     other/modmailmessage
+    other/modnotes
     other/poll
     other/preferences
     other/redditbase
