@@ -416,7 +416,12 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
     def notes(self) -> "praw.models.reddit.subreddit.ModNotes":
         """Provide an instance of :class:`.ModNotes`.
 
-        TODO
+        For example, notes for a user can be iterated through like so:
+
+        .. code-block:: python
+
+            for note in reddit.subreddit("redditdev").notes("spez"):
+                print(f"{note.label}: {note.user_note_data['note']}")
         """
         return ModNotes(self)
 
@@ -3350,22 +3355,40 @@ class Modmail:
 
 
 class ModNotes:
-    """TODO
+    """Provides methods to interact with mod notes in a subreddit
+
+    For example, notes for a user can be iterated through like so:
+
+    .. code-block:: python
+
+        for note in reddit.subreddit("redditdev").notes("spez"):
+            print(f"{note.label}: {note.user_note_data['note']}")
+
+        .. note::
+
+            The authenticated user must be a moderator of the subreddit.
 
     """
 
     def __call__(
         self,
-        redditor: Optional[Union[str, "praw.models.Redditor"]],
+        redditor: Union[str, "praw.models.Redditor"],
         **generator_kwargs: Any,
     ) -> Iterator["praw.models.ModNote"]:
-        """TODO
+        """Return a list of notes associated with a Redditor
+
+        :param redditor: The redditor to return notes on. This is required,
+        there is no method to get all notes in a subreddit.
+
         """
         Subreddit._safely_add_arguments(generator_kwargs, "params", subreddit=self.subreddit, user=redditor)
         return ListingGenerator(self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs)
 
     def __init__(self, subreddit: "praw.models.Subreddit"):
-        """TODO
+        """Create a ModNotes instance.
+
+        :param subreddit: The subreddit associated with the notes.
+
         """
         self.subreddit = subreddit
 
@@ -3377,14 +3400,30 @@ class ModNotes:
         reddit_id: str = None,
         **other_settings: Any
     ):
-        """TODO
+        """Add a note to a user in this subreddit.
+
+        :param redditor: The redditor to add the note on.
+        :param note: The content of the note, limited to 250 characters
+        :param label: The label to create the note under, can be None or one of
+            ``"BOT_BAN"``, ``"PERMA_BAN"``, ``"BAN"``, ``"ABUSE_WARNING"``,
+            ``"SPAM_WARNING"``, ``"SPAM_WATCH"``, ``"SOLID_CONTRIBUTOR"``,
+            ``"HELPFUL_USER"``.
+        :param reddit_id: The fullname of a comment or submission to associate
+            with the note. This starts with t1_ or t3_
+
+        :returns: The :class:`.ModNote` that was created.
+
         """
         data = {"user": str(redditor), "subreddit": str(self.subreddit), "note": note, "label": label, "reddit_id": reddit_id}
         data.update(other_settings)
         return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
 
     def remove(self, redditor: Union[str, "praw.models.Redditor"], note_id: str):
-        """TODO
+        """Delete a note from a user in this subreddit.
+
+        :param redditor: The redditor to delete the note from.
+        :param note_id: The id of the note to delete.
+
         """
         data = {"name": str(redditor), "note_id": note_id}
         self.subreddit._reddit.delete(API_PATH["mod_notes"], data=data)
