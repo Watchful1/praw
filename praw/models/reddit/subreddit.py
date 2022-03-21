@@ -251,14 +251,6 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
         return SubredditRelationship(self, "banned")
 
     @cachedproperty
-    def notes(self) -> "praw.models.reddit.subreddit.ModNotes":
-        """Provide an instance of :class:`.ModNotes`.
-
-        TODO
-        """
-        return ModNotes(self)
-
-    @cachedproperty
     def collections(self) -> "praw.models.reddit.collections.SubredditCollections":
         r"""Provide an instance of :class:`.SubredditCollections`.
 
@@ -419,6 +411,14 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
 
         """
         return SubredditRelationship(self, "muted")
+
+    @cachedproperty
+    def notes(self) -> "praw.models.reddit.subreddit.ModNotes":
+        """Provide an instance of :class:`.ModNotes`.
+
+        TODO
+        """
+        return ModNotes(self)
 
     @cachedproperty
     def quaran(self) -> "praw.models.reddit.subreddit.SubredditQuarantine":
@@ -2857,47 +2857,6 @@ class SubredditRelationship:
         self.subreddit._reddit.post(url, data=data)
 
 
-class ModNotes:
-    """TODO
-
-    """
-
-    def __call__(
-        self,
-        redditor: Optional[Union[str, "praw.models.Redditor"]],
-        **generator_kwargs: Any,
-    ) -> Iterator["praw.models.ModNote"]:
-        """TODO
-        """
-        Subreddit._safely_add_arguments(generator_kwargs, "params", subreddit=self.subreddit, user=redditor)
-        return ListingGenerator(self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs)
-
-    def __init__(self, subreddit: "praw.models.Subreddit"):
-        """TODO
-        """
-        self.subreddit = subreddit
-
-    def add(
-        self,
-        redditor: Union[str, "praw.models.Redditor"],
-        note: str,
-        label: str = None,
-        reddit_id: str = None,
-        **other_settings: Any
-    ):
-        """TODO
-        """
-        data = {"user": str(redditor), "subreddit": str(self.subreddit), "note": note, "label": label, "reddit_id": reddit_id}
-        data.update(other_settings)
-        return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
-
-    def remove(self, redditor: Union[str, "praw.models.Redditor"], note_id: str):
-        """TODO
-        """
-        data = {"name": str(redditor), "note_id": note_id}
-        self.subreddit._reddit.delete(API_PATH["mod_notes"], data=data)
-
-
 class ContributorRelationship(SubredditRelationship):
     """Provides methods to interact with a Subreddit's contributors.
 
@@ -3388,6 +3347,47 @@ class Modmail:
 
         """
         return self.subreddit._reddit.get(API_PATH["modmail_unread_count"])
+
+
+class ModNotes:
+    """TODO
+
+    """
+
+    def __call__(
+        self,
+        redditor: Optional[Union[str, "praw.models.Redditor"]],
+        **generator_kwargs: Any,
+    ) -> Iterator["praw.models.ModNote"]:
+        """TODO
+        """
+        Subreddit._safely_add_arguments(generator_kwargs, "params", subreddit=self.subreddit, user=redditor)
+        return ListingGenerator(self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs)
+
+    def __init__(self, subreddit: "praw.models.Subreddit"):
+        """TODO
+        """
+        self.subreddit = subreddit
+
+    def add(
+        self,
+        redditor: Union[str, "praw.models.Redditor"],
+        note: str,
+        label: str = None,
+        reddit_id: str = None,
+        **other_settings: Any
+    ):
+        """TODO
+        """
+        data = {"user": str(redditor), "subreddit": str(self.subreddit), "note": note, "label": label, "reddit_id": reddit_id}
+        data.update(other_settings)
+        return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
+
+    def remove(self, redditor: Union[str, "praw.models.Redditor"], note_id: str):
+        """TODO
+        """
+        data = {"name": str(redditor), "note_id": note_id}
+        self.subreddit._reddit.delete(API_PATH["mod_notes"], data=data)
 
 
 class SubredditStream:
