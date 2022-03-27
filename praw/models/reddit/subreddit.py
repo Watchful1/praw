@@ -426,6 +426,35 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
         return ModNotes(self)
 
     @cachedproperty
+    def notes_bulk(
+        self, users: List[Union[str, "praw.models.Redditor"]]
+    ) -> Iterator["praw.models.ModNote"]:
+        """Get the most recent note for each user in this subreddit, or None if they don't have any.
+
+        :param users: A list of redditors
+
+        :returns: A generator that yields found the single most recent note, or None, per entry in their relative order.
+
+        .. code-block:: python
+
+            users = ["spez", "bboe", "redtaboo"]
+            for note in reddit.subreddit("redditdev").notes_bulk(users):
+                if note is None:
+                    print("No note")
+                else:
+                    print(note)
+
+        """
+        pairs = []
+        for redditor in users:
+            if isinstance(redditor, praw.models.Redditor):
+                pairs.append((self.display_name, redditor.name))
+            else:
+                pairs.append((self.display_name, redditor))
+
+        return self._reddit.mod_notes(pairs)
+
+    @cachedproperty
     def quaran(self) -> "praw.models.reddit.subreddit.SubredditQuarantine":
         """Provide an instance of :class:`.SubredditQuarantine`.
 
@@ -3639,7 +3668,10 @@ class ModNotes:
 
         """
         Subreddit._safely_add_arguments(
-            generator_kwargs, "params", subreddit=self.subreddit, user=redditor
+            arguments=generator_kwargs,
+            key="params",
+            subreddit=self.subreddit,
+            user=redditor,
         )
         return ListingGenerator(
             self.subreddit._reddit, API_PATH["mod_notes"], **generator_kwargs
@@ -3660,7 +3692,7 @@ class ModNotes:
         label: str = None,
         reddit_id: str = None,
         **other_settings: Any,
-    ):
+    ) -> "praw.models.ModNote":
         """Add a note to a user in this subreddit.
 
         :param redditor: The redditor to add the note on.
@@ -3685,15 +3717,46 @@ class ModNotes:
         data.update(other_settings)
         return self.subreddit._reddit.post(API_PATH["mod_notes"], data=data)
 
-    def remove(self, redditor: Union[str, "praw.models.Redditor"], note_id: str):
+    def remove(
+        self,
+        redditor: Union[str, "praw.models.Redditor"] = None,
+        note_id: str = None,
+        note: "praw.models.ModNote" = None,
+    ):
         """Delete a note from a user in this subreddit.
+
+        Takes either redditor and note_id, or just note.
 
         :param redditor: The redditor to delete the note from.
         :param note_id: The id of the note to delete.
+        :param note: The note object to delete
+
+        .. code-block:: python
+
+            reddit.subreddit("redditdev").notes.remove(redditor="spez", note_id="ModNote_d324b280-5ecc-435d-8159-3e259e84e339")
+
+        .. code-block:: python
+
+            for note in reddit.subreddit("redditdev").notes("spez"):
+                reddit.subreddit("redditdev").notes.remove(note=note)
 
         """
-        data = {"name": str(redditor), "note_id": note_id}
-        self.subreddit._reddit.delete(API_PATH["mod_notes"], data=data)
+        if ((redditor, note_id).count(None) == 0, note is not None).count(
+            True
+        ) != 1 or (redditor, note_id).count(None) == 1:
+            raise TypeError(
+                "Both `redditor` and `note_id`, or just `note` must be provided."
+            )
+        if note is not None:
+            redditor = note.user
+            note_id = note.id
+
+        params = {
+            "user": str(redditor),
+            "subreddit": str(self.subreddit),
+            "note_id": note_id,
+        }
+        self.subreddit._reddit.delete(API_PATH["mod_notes"], params=params)
 
 
 class SubredditStream:

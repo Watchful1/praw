@@ -1,6 +1,6 @@
 """Provide the Redditor class."""
 from json import dumps
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Generator, Iterator, List, Optional, Union
 
 from ...const import API_PATH
 from ...util import _deprecate_args
@@ -330,6 +330,35 @@ class Redditor(MessageableMixin, RedditorListingMixin, FullnameMixin, RedditBase
 
         """
         return self._reddit.get(API_PATH["multireddit_user"].format(user=self))
+
+    @cachedproperty
+    def notes_bulk(
+        self, subreddits: List[Union[str, "praw.models.Subreddit"]]
+    ) -> Iterator["praw.models.ModNote"]:
+        """Get the most recent note for this user in each subreddit passed in, or None if they don't have any.
+
+        :param subreddits: A list of subreddits
+
+        :returns: A generator that yields found the single most recent note, or None, per entry in their relative order.
+
+        .. code-block:: python
+
+            subreddits = ["redditdev", "announcements", "pics"]
+            for note in reddit.redditor("spez").notes_bulk(subreddits):
+                if note is None:
+                    print("No note")
+                else:
+                    print(note)
+
+        """
+        pairs = []
+        for subreddit in subreddits:
+            if isinstance(subreddit, praw.models.Subreddit):
+                pairs.append((subreddit.display_name, self.name))
+            else:
+                pairs.append((subreddit, self.name))
+
+        return self._reddit.mod_notes(pairs)
 
     def trophies(self) -> List["praw.models.Trophy"]:
         """Return a list of the redditor's trophies.

@@ -190,6 +190,11 @@ class Objector:
             data["moderator"] = self._reddit.redditor(data["operator"])
             data["subreddit"] = self._reddit.subreddit(data["subreddit"])
             data["user"] = self._reddit.redditor(data["user"])
+            # move these sub dict values into the main dict for simplicity
+            data.update(data["mod_action_data"])
+            # del data["mod_action_data"]
+            data.update(data["user_note_data"])
+            # del data["user_note_data"]
             parser = self.parsers["mod_note"]
         elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(
             data["created"]
