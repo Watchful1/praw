@@ -433,7 +433,8 @@ class Subreddit(MessageableMixin, SubredditListingMixin, FullnameMixin, RedditBa
 
         :param users: A list of redditors
 
-        :returns: A generator that yields found the single most recent note, or None, per entry in their relative order.
+        :returns: A generator that yields found the single most recent note, or None,
+            per entry in their relative order.
 
         .. code-block:: python
 
@@ -3733,7 +3734,9 @@ class ModNotes:
 
         .. code-block:: python
 
-            reddit.subreddit("redditdev").notes.remove(redditor="spez", note_id="ModNote_d324b280-5ecc-435d-8159-3e259e84e339")
+            reddit.subreddit("redditdev").notes.remove(
+                redditor="spez", note_id="ModNote_d324b280-5ecc-435d-8159-3e259e84e339"
+            )
 
         .. code-block:: python
 

@@ -339,7 +339,8 @@ class Redditor(MessageableMixin, RedditorListingMixin, FullnameMixin, RedditBase
 
         :param subreddits: A list of subreddits
 
-        :returns: A generator that yields found the single most recent note, or None, per entry in their relative order.
+        :returns: A generator that yields found the single most recent note, or None,
+            per entry in their relative order.
 
         .. code-block:: python
 

@@ -691,17 +691,15 @@ class Reddit:
     ) -> Generator["praw.models.ModNote", None, None]:
         """Get the most recent note for each subreddit/user pair, or None if they don't have any.
 
-        :param subreddit_users: A list of subreddit/username string tuples, comment or submission objects
+        :param subreddit_users: A list of subreddit/username string tuples, comment or
+            submission objects
 
-        :returns: A generator that yields found the single most recent note, or None, per entry in their relative order.
+        :returns: A generator that yields found the single most recent note, or None,
+            per entry in their relative order.
 
         .. code-block:: python
 
-            pairs = [
-                ("redditdev", "spez"),
-                ("announcements", "spez"),
-                ("redditdev", "bboe")
-            ]
+            pairs = [("redditdev", "spez"), ("announcements", "spez"), ("redditdev", "bboe")]
             for note in reddit.mod_notes(pairs):
                 if note is None:
                     print("No note")
