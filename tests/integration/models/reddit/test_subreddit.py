@@ -1800,6 +1800,71 @@ class TestSubredditRelationships(IntegrationTest):
             self.add_remove(self.subreddit.wiki, self.REDDITOR, "contributor")
 
 
+class TestSubredditNotes(IntegrationTest):
+    REDDITOR = "pyapitestuser3"
+
+    def test_add_note(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            result_note = self.reddit.subreddit("SubTestBot1").notes.add(
+                self.REDDITOR, "test note", label="HELPFUL_USER", reddit_id="t3_tpbemz"
+            )
+            assert result_note.user.name.lower() == self.REDDITOR
+            assert result_note.id.startswith("ModNote")
+            assert result_note.moderator.name == "Watchful1"
+            assert result_note.note == "test note"
+            assert result_note.label == "HELPFUL_USER"
+            assert result_note.reddit_id == "t3_tpbemz"
+
+    def test_get_notes(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            note = next(self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR))
+            assert note.user.name.lower() == self.REDDITOR
+            assert note.note == "test note"
+
+    def test_delete_notes(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            result_note = self.reddit.subreddit("SubTestBot1").notes.add(
+                self.REDDITOR, "test note"
+            )
+            self.reddit.subreddit("SubTestBot1").notes.remove(note=result_note)
+            note = next(self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR))
+            assert note.id != result_note.id
+
+    def test_get_notes_for_submission(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            note = next(self.reddit.submission("tpbemz").get_author_notes())
+            assert note.user.name.lower() == "watchful12"
+            assert note.note == "test note"
+
+    def test_add_notes_for_submission(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            result_note = self.reddit.submission("tpbemz").add_note("test note")
+            assert result_note.user.name.lower() == "watchful12"
+            assert result_note.note == "test note"
+
+    def test_get_bulk_notes(self):
+        self.reddit.read_only = False
+        with self.use_cassette():
+            notes = list(
+                self.reddit.mod_notes(
+                    [
+                        ("subtestbot1", "Watchful1"),
+                        ("subtestbot1", "watchful12"),
+                        ("subtestbot1", "spez"),
+                    ]
+                )
+            )
+            assert len(notes) == 3
+            assert notes[0].user.name.lower() == "watchful1"
+            assert notes[1].user.name.lower() == "watchful12"
+            assert notes[2] is None
+
+
 class TestSubredditStreams(IntegrationTest):
     @mock.patch("time.sleep", return_value=None)
     def test_comments(self, _):
