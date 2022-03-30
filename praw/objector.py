@@ -196,8 +196,10 @@ class Objector:
             data.update(data["user_note_data"])
             del data["user_note_data"]
             parser = self.parsers["mod_note"]
-        elif "created" in data and {"mod_action_data", "user_note_data"}.issubset(
-            data["created"]
+        elif (
+            "created" in data
+            and isinstance(data["created"], dict)
+            and {"mod_action_data", "user_note_data"}.issubset(data["created"])
         ):
             data = data["created"]
             return self._objectify_dict(data)
