@@ -142,6 +142,14 @@ class TestReddit(UnitTest):
             == "/user/bboe/m/aa"
         )
 
+    def test_bulk_notes_badarg(self):
+        with pytest.raises(ValueError) as excinfo:
+            self.reddit.mod_notes(subreddit_users=["not_tuple"])
+        assert (
+            excinfo.value.args[0]
+            == "Cannot get subreddit and user fields from type <class 'str'>"
+        )
+
     @mock.patch(
         "praw.Reddit.request",
         side_effect=[

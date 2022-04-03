@@ -687,7 +687,7 @@ class Reddit:
         return generator(url)
 
     def mod_notes(
-        self, subreddit_users: Iterable[Union[Tuple[str, str], Comment, Submission]]
+        self, subreddit_users: Iterable[Union[Tuple[Union[str, Subreddit], Union[str, Redditor]], Comment, Submission]]
     ) -> Generator["praw.models.ModNote", None, None]:
         """Get the most recent note for each subreddit/user pair, or None if they don't have any.
 
@@ -726,8 +726,14 @@ class Reddit:
                 subreddits.append(subreddit_user.subreddit.display_name)
                 users.append(subreddit_user.author.name)
             elif isinstance(subreddit_user, Tuple):
-                subreddits.append(subreddit_user[0])
-                users.append(subreddit_user[1])
+                if isinstance(subreddit_user[0], Subreddit):
+                    subreddits.append(subreddit_user[0].display_name)
+                else:
+                    subreddits.append(subreddit_user[0])
+                if isinstance(subreddit_user[1], Redditor):
+                    users.append(subreddit_user[1].name)
+                else:
+                    users.append(subreddit_user[1])
             else:
                 raise ValueError(
                     f"Cannot get subreddit and user fields from type {type(subreddit_user)}"
@@ -739,7 +745,7 @@ class Reddit:
             while True:
                 subreddits_chunk = list(islice(subs_iter, 500))
                 users_chunk = list(islice(users_iter, 500))
-                if not subreddits_chunk or not users_chunk:
+                if not any([subreddits_chunk, users_chunk]):
                     break
                 params = {
                     "subreddits": ",".join(subreddits_chunk),

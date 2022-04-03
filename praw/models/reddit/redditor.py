@@ -331,7 +331,6 @@ class Redditor(MessageableMixin, RedditorListingMixin, FullnameMixin, RedditBase
         """
         return self._reddit.get(API_PATH["multireddit_user"].format(user=self))
 
-    @cachedproperty
     def notes_bulk(
         self, subreddits: List[Union[str, "praw.models.Subreddit"]]
     ) -> Iterator["praw.models.ModNote"]:
@@ -354,10 +353,7 @@ class Redditor(MessageableMixin, RedditorListingMixin, FullnameMixin, RedditBase
         """
         pairs = []
         for subreddit in subreddits:
-            if isinstance(subreddit, praw.models.Subreddit):
-                pairs.append((subreddit.display_name, self.name))
-            else:
-                pairs.append((subreddit, self.name))
+            pairs.append((subreddit, self.name))
 
         return self._reddit.mod_notes(pairs)
 

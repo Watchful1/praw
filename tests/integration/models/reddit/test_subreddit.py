@@ -1819,9 +1819,10 @@ class TestSubredditNotes(IntegrationTest):
     def test_get_notes(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            note = next(self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR))
-            assert note.user.name.lower() == self.REDDITOR
-            assert note.note == "test note"
+            generator = self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR, limit=2)
+            notes = list(generator)
+            assert notes[0].user.name.lower() == self.REDDITOR
+            assert notes[0].note == "test note"
 
     def test_delete_notes(self):
         self.reddit.read_only = False
@@ -1851,12 +1852,8 @@ class TestSubredditNotes(IntegrationTest):
         self.reddit.read_only = False
         with self.use_cassette():
             notes = list(
-                self.reddit.mod_notes(
-                    [
-                        ("subtestbot1", "Watchful1"),
-                        ("subtestbot1", "watchful12"),
-                        ("subtestbot1", "spez"),
-                    ]
+                self.reddit.subreddit("subtestbot1").notes_bulk(
+                    users=["Watchful1", "watchful12", "spez"]
                 )
             )
             assert len(notes) == 3

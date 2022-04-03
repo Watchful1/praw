@@ -66,25 +66,28 @@ class ListingGenerator(PRAWBase, Iterator):
         self.yielded += 1
         return self._listing[self._list_index - 1]
 
+    def _extract_sublist(self, listing):
+        if isinstance(listing, list):
+            return listing[1]  # for submission duplicates
+        elif isinstance(listing, dict):
+            classes = [FlairListing, ModNoteListing]
+
+            for listing_type in classes:
+                if listing_type.CHILD_ATTRIBUTE in listing:
+                    return listing_type(self._reddit, listing)
+            else:
+                raise ValueError(
+                    "The generator returned a dictionary PRAW didn't recognize."
+                    " File a bug report at PRAW."
+                )
+        return listing
+
     def _next_batch(self):
         if self._exhausted:
             raise StopIteration()
 
         self._listing = self._reddit.get(self.url, params=self.params)
-        if isinstance(self._listing, list):
-            self._listing = self._listing[1]  # for submission duplicates
-        elif isinstance(self._listing, dict):
-            classes = [FlairListing, ModNoteListing]
-
-            for listing in classes:
-                if listing.CHILD_ATTRIBUTE in self._listing:
-                    self._listing = listing(self._reddit, self._listing)
-                    break
-            else:
-                raise ValueError(
-                    "The generator returned a dictionary PRAW didn't recognize."
-                    " File a bug report at PRAW"
-                )
+        self._listing = self._extract_sublist(self._listing)
         self._list_index = 0
 
         if not self._listing:

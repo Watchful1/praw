@@ -37,7 +37,3 @@ class ModNote(PRAWBase):
     .. _unix time: https://en.wikipedia.org/wiki/Unix_time
 
     """
-
-    def __str__(self) -> str:
-        """Return a string representation of the instance."""
-        return getattr(self, "id")
