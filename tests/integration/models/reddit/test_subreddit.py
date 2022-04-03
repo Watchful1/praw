@@ -1819,7 +1819,9 @@ class TestSubredditNotes(IntegrationTest):
     def test_get_notes(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            generator = self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR, limit=2)
+            generator = self.reddit.subreddit("SubTestBot1").notes(
+                self.REDDITOR, limit=2
+            )
             notes = list(generator)
             assert notes[0].user.name.lower() == self.REDDITOR
             assert notes[0].note == "test note"

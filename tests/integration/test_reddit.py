@@ -178,7 +178,7 @@ class TestReddit(IntegrationTest):
                         (self.reddit.subreddit("SubTestBot1"), "Watchful1"),
                         ("SubTestBot1", self.reddit.redditor("watchful12")),
                         ("SubTestBot1", "spez"),
-                        self.reddit.submission("jlbw48")
+                        self.reddit.submission("jlbw48"),
                     ]
                 )
             )

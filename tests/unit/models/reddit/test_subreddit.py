@@ -97,7 +97,9 @@ class TestSubreddit(UnitTest):
 
     def test_notes_delete_badarg(self):
         with pytest.raises(TypeError) as excinfo:
-            self.reddit.subreddit("SubTestBot1").notes.remove(note="result_note", note_id="111")
+            self.reddit.subreddit("SubTestBot1").notes.remove(
+                note="result_note", note_id="111"
+            )
         assert (
             excinfo.value.args[0]
             == "Both `redditor` and `note_id`, or just `note` must be provided."

@@ -687,7 +687,12 @@ class Reddit:
         return generator(url)
 
     def mod_notes(
-        self, subreddit_users: Iterable[Union[Tuple[Union[str, Subreddit], Union[str, Redditor]], Comment, Submission]]
+        self,
+        subreddit_users: Iterable[
+            Union[
+                Tuple[Union[str, Subreddit], Union[str, Redditor]], Comment, Submission
+            ]
+        ],
     ) -> Generator["praw.models.ModNote", None, None]:
         """Get the most recent note for each subreddit/user pair, or None if they don't have any.
 
