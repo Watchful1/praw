@@ -19,7 +19,7 @@ def _sleep(*args):
     raise Exception("Call to sleep")
 
 
-#time.sleep = _sleep
+time.sleep = _sleep
 
 
 def b64_string(input_string):
