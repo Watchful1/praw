@@ -14,7 +14,6 @@ from typing import (
     Generator,
     Iterable,
     Optional,
-    Tuple,
     Type,
     Union,
 )
@@ -41,8 +40,9 @@ from .exceptions import (
     MissingRequiredAttributeException,
     RedditAPIException,
 )
+from .models import ModNotes
 from .objector import Objector
-from .util import _deprecate_args
+from .util import _deprecate_args, cachedproperty
 from .util.token_manager import BaseTokenManager
 
 try:
@@ -686,18 +686,12 @@ class Reddit:
 
         return generator(url)
 
-    def mod_notes(
-        self,
-        subreddit_users: Iterable[
-            Union[
-                Tuple[Union[str, Subreddit], Union[str, Redditor]], Comment, Submission
-            ]
-        ],
-    ) -> Generator["praw.models.ModNote", None, None]:
-        """Get the most recent note for each subreddit/user pair, or None if they don't have any.
+    @cachedproperty
+    def mod_notes(self) -> ModNotes:
+        """Get the most recent note for each subreddit/user pair, or ``None`` if they don't have any.
 
-        :param subreddit_users: A list of subreddit/username string tuples, comment or
-            submission objects
+        :param items: A list of subreddit/username string tuples, comment or submission
+            objects
 
         :returns: A generator that yields found the single most recent note, or None,
             per entry in their relative order.
@@ -722,45 +716,7 @@ class Reddit:
             notes = list(reddit.mod_notes(comments))
 
         """
-        subreddits = []
-        users = []
-        for subreddit_user in subreddit_users:
-            if isinstance(subreddit_user, Comment) or isinstance(
-                subreddit_user, Submission
-            ):
-                subreddits.append(subreddit_user.subreddit.display_name)
-                users.append(subreddit_user.author.name)
-            elif isinstance(subreddit_user, Tuple):
-                if isinstance(subreddit_user[0], Subreddit):
-                    subreddits.append(subreddit_user[0].display_name)
-                else:
-                    subreddits.append(subreddit_user[0])
-                if isinstance(subreddit_user[1], Redditor):
-                    users.append(subreddit_user[1].name)
-                else:
-                    users.append(subreddit_user[1])
-            else:
-                raise ValueError(
-                    f"Cannot get subreddit and user fields from type {type(subreddit_user)}"
-                )
-
-        def generator(subreddits, users):
-            subs_iter = iter(subreddits)
-            users_iter = iter(users)
-            while True:
-                subreddits_chunk = list(islice(subs_iter, 500))
-                users_chunk = list(islice(users_iter, 500))
-                if not any([subreddits_chunk, users_chunk]):
-                    break
-                params = {
-                    "subreddits": ",".join(subreddits_chunk),
-                    "users": ",".join(users_chunk),
-                }
-                call_result = self.get(API_PATH["mod_notes_bulk"], params=params)
-                for note_dict in call_result["mod_notes"]:
-                    yield self._objector.objectify(note_dict)
-
-        return generator(subreddits, users)
+        return ModNotes(self)
 
     def _objectify_request(
         self,

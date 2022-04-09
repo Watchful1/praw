@@ -9,6 +9,7 @@ from .base import RedditBase
 from .mixins import (
     FullnameMixin,
     InboxableMixin,
+    ModNoteMixin,
     ThingModerationMixin,
     UserContentMixin,
 )
@@ -317,7 +318,7 @@ class Comment(InboxableMixin, UserContentMixin, FullnameMixin, RedditBase):
         return self
 
 
-class CommentModeration(ThingModerationMixin):
+class CommentModeration(ThingModerationMixin, ModNoteMixin):
     """Provide a set of functions pertaining to :class:`.Comment` moderation.
 
     Example usage:

@@ -58,6 +58,7 @@ setup(
     extras_require=extras,
     install_requires=[
         "prawcore >=2.1, <3",
+        "singledispatch >=0.18 ; python_version < '3.8'",
         "update_checker >=0.18",
         "websocket-client >=0.54.0",
     ],

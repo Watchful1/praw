@@ -312,6 +312,5 @@ class UserContentMixin(
     ReportableMixin,
     SavableMixin,
     VotableMixin,
-    ModNoteMixin,
 ):
     """A convenience mixin that applies to both Comments and Submissions."""

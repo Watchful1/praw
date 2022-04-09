@@ -140,7 +140,7 @@ class TestRedditor(IntegrationTest):
         self.reddit.read_only = False
         with self.use_cassette():
             notes = list(
-                self.reddit.redditor("Watchful1").notes_bulk(
+                self.reddit.redditor("Watchful1").notes(
                     subreddits=["subtestbot1", "subtestbot2"]
                 )
             )

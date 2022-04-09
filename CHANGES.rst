@@ -14,8 +14,7 @@ Unreleased
 - :meth:`.SubredditCollectionsModeration.create` keyword argument ``display_layout`` for
   specifying a display layout when creating a :class:`.Collection`.
 - :attr:`~.Message.parent` to get the parent of a :class:`.Message`.
-- :attr:`praw.models.reddit.subreddit.ModNotes` to interact with subreddit moderator
-  notes.
+- :class:`.ModNotes` to interact with subreddit moderator notes.
 
 **Changed**
 

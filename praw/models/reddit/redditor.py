@@ -331,31 +331,31 @@ class Redditor(MessageableMixin, RedditorListingMixin, FullnameMixin, RedditBase
         """
         return self._reddit.get(API_PATH["multireddit_user"].format(user=self))
 
-    def notes_bulk(
-        self, subreddits: List[Union[str, "praw.models.Subreddit"]]
+    def notes(
+        self,
+        subreddits: List[Union[str, "praw.models.Subreddit"]],
+        all_notes: bool = False,
     ) -> Iterator["praw.models.ModNote"]:
-        """Get the most recent note for this user in each subreddit passed in, or None if they don't have any.
+        """Get the most recent note for this user in each subreddit passed in, or ``None`` if they don't have any.
 
         :param subreddits: A list of subreddits
 
-        :returns: A generator that yields found the single most recent note, or None,
-            per entry in their relative order.
+        :returns: A generator that yields found the single most recent note, or
+            ``None``, per entry in their relative order.
 
         .. code-block:: python
 
             subreddits = ["redditdev", "announcements", "pics"]
-            for note in reddit.redditor("spez").notes_bulk(subreddits):
+            for note in reddit.redditor("spez").notes(subreddits):
                 if note is None:
                     print("No note")
                 else:
                     print(note)
 
         """
-        pairs = []
-        for subreddit in subreddits:
-            pairs.append((subreddit, self.name))
-
-        return self._reddit.mod_notes(pairs)
+        return self._reddit.mod_notes(
+            zip(subreddits, [self.name] * len(subreddits)), all_notes=all_notes
+        )
 
     def trophies(self) -> List["praw.models.Trophy"]:
         """Return a list of the redditor's trophies.

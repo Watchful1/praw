@@ -1806,8 +1806,11 @@ class TestSubredditNotes(IntegrationTest):
     def test_add_note(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            result_note = self.reddit.subreddit("SubTestBot1").notes.add(
-                self.REDDITOR, "test note", label="HELPFUL_USER", reddit_id="t3_tpbemz"
+            result_note = self.reddit.subreddit("SubTestBot1").mod.notes.create(
+                redditor=self.REDDITOR,
+                note="test note",
+                label="HELPFUL_USER",
+                reddit_id="t3_tpbemz",
             )
             assert result_note.user.name.lower() == self.REDDITOR
             assert result_note.id.startswith("ModNote")
@@ -1819,7 +1822,7 @@ class TestSubredditNotes(IntegrationTest):
     def test_get_notes(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            generator = self.reddit.subreddit("SubTestBot1").notes(
+            generator = self.reddit.subreddit("SubTestBot1").mod.notes(
                 self.REDDITOR, limit=2
             )
             notes = list(generator)
@@ -1829,24 +1832,26 @@ class TestSubredditNotes(IntegrationTest):
     def test_delete_notes(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            result_note = self.reddit.subreddit("SubTestBot1").notes.add(
-                self.REDDITOR, "test note"
+            result_note = self.reddit.subreddit("SubTestBot1").mod.notes.create(
+                redditor=self.REDDITOR, note="test note"
             )
-            self.reddit.subreddit("SubTestBot1").notes.remove(note=result_note)
-            note = next(self.reddit.subreddit("SubTestBot1").notes(self.REDDITOR))
+            self.reddit.subreddit("SubTestBot1").mod.notes.delete(
+                note_id=result_note.id, redditor=result_note.user
+            )
+            note = next(self.reddit.subreddit("SubTestBot1").mod.notes(self.REDDITOR))
             assert note.id != result_note.id
 
     def test_get_notes_for_submission(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            note = next(self.reddit.submission("tpbemz").get_author_notes())
+            note = next(self.reddit.submission("tpbemz").mod.notes())
             assert note.user.name.lower() == "watchful12"
             assert note.note == "test note"
 
     def test_add_notes_for_submission(self):
         self.reddit.read_only = False
         with self.use_cassette():
-            result_note = self.reddit.submission("tpbemz").add_note("test note")
+            result_note = self.reddit.submission("tpbemz").mod.add_note("test note")
             assert result_note.user.name.lower() == "watchful12"
             assert result_note.note == "test note"
 
@@ -1854,8 +1859,8 @@ class TestSubredditNotes(IntegrationTest):
         self.reddit.read_only = False
         with self.use_cassette():
             notes = list(
-                self.reddit.subreddit("subtestbot1").notes_bulk(
-                    users=["Watchful1", "watchful12", "spez"]
+                self.reddit.subreddit("subtestbot1").mod.notes(
+                    ["Watchful1", "watchful12", "spez"]
                 )
             )
             assert len(notes) == 3

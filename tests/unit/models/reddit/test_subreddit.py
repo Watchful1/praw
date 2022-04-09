@@ -95,14 +95,12 @@ class TestSubreddit(UnitTest):
         with pytest.raises(ServerError):
             self.reddit.subreddit("test").submit_image("Test", "/dev/null")
 
-    def test_notes_delete_badarg(self):
+    def test_notes_delete__invalid_args(self):
         with pytest.raises(TypeError) as excinfo:
-            self.reddit.subreddit("SubTestBot1").notes.remove(
-                note="result_note", note_id="111"
-            )
+            self.reddit.subreddit("SubTestBot1").mod.notes.delete(note_id="111")
         assert (
             excinfo.value.args[0]
-            == "Both `redditor` and `note_id`, or just `note` must be provided."
+            == "Either `redditor` and `note_id`, or `redditor` and `delete_all` must be provided."
         )
 
     def test_pickle(self):

@@ -142,12 +142,12 @@ class TestReddit(UnitTest):
             == "/user/bboe/m/aa"
         )
 
-    def test_bulk_notes_badarg(self):
+    def test_bulk_notes__invalid_args(self):
         with pytest.raises(ValueError) as excinfo:
-            self.reddit.mod_notes(subreddit_users=["not_tuple"])
+            self.reddit.mod_notes(1)
         assert (
             excinfo.value.args[0]
-            == "Cannot get subreddit and user fields from type <class 'str'>"
+            == "Getting notes for type <class 'int'> is not supported."
         )
 
     @mock.patch(

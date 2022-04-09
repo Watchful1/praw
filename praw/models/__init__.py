@@ -12,6 +12,7 @@ from .listing.generator import ListingGenerator
 from .listing.listing import Listing, ModeratorListing, ModmailConversationsListing
 from .mod_action import ModAction
 from .mod_note import ModNote
+from .mod_notes import ModNotes
 from .preferences import Preferences
 from .reddit.collections import Collection
 from .reddit.comment import Comment
