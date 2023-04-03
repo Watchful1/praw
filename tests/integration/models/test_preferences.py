@@ -96,7 +96,6 @@ class TestPreferences(IntegrationTest):
         preferences = self.reddit.user.preferences
 
         with self.use_cassette():
-
             # test an empty update
             preferences.update()
 

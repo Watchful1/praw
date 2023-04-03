@@ -703,7 +703,6 @@ class TestPostFlairWidget(IntegrationTest):
 
 class TestRulesWidget(IntegrationTest):
     def test_rules_widget(self):
-
         subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
         widgets = subreddit.widgets
         with self.use_cassette("TestSubredditWidgets.fetch_widgets"):

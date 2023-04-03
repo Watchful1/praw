@@ -615,7 +615,6 @@ class TestSubreddit(IntegrationTest):
         # happens with timeout=0.00001
     )
     def test_submit_image__timeout_2(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -631,7 +630,6 @@ class TestSubreddit(IntegrationTest):
         ),  # happens with timeout=0.1
     )
     def test_submit_image__timeout_3(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -647,7 +645,6 @@ class TestSubreddit(IntegrationTest):
         ),  # could happen, and PRAW should handle it
     )
     def test_submit_image__timeout_4(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -796,7 +793,6 @@ class TestSubreddit(IntegrationTest):
         "websocket.create_connection", side_effect=BlockingIOError
     )  # happens with timeout=0
     def test_submit_video__timeout_1(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -811,7 +807,6 @@ class TestSubreddit(IntegrationTest):
         # happens with timeout=0.00001
     )
     def test_submit_video__timeout_2(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -827,7 +822,6 @@ class TestSubreddit(IntegrationTest):
         ),  # happens with timeout=0.1
     )
     def test_submit_video__timeout_3(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
@@ -843,7 +837,6 @@ class TestSubreddit(IntegrationTest):
         ),  # could happen, and PRAW should handle it
     )
     def test_submit_video__timeout_4(self, _, __):
-
         self.reddit.read_only = False
         with self.use_cassette():
             subreddit = self.reddit.subreddit(pytest.placeholders.test_subreddit)
