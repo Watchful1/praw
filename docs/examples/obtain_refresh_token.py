@@ -23,6 +23,7 @@ Usage:
     python3 obtain_refresh_token.py
 
 """
+
 import random
 import socket
 import sys

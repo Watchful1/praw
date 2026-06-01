@@ -1,10 +1,12 @@
-Change Log
-==========
+############
+ Change Log
+############
 
 PRAW follows `semantic versioning <https://semver.org/>`_.
 
-Unreleased
-----------
+************
+ Unreleased
+************
 
 **Added**
 
@@ -24,15 +26,17 @@ Unreleased
 
 - Drop support for Python 3.7, which is end-of-life on 2023-06-27.
 
-7.7.1 (2023/07/11)
-------------------
+********************
+ 7.7.1 (2023/07/11)
+********************
 
 **Fixed**
 
 - An issue with replying to a modmail conversation results in a error.
 
-7.7.0 (2023/02/25)
-------------------
+********************
+ 7.7.0 (2023/02/25)
+********************
 
 **Added**
 
@@ -61,8 +65,9 @@ Unreleased
 - An issue with iterating :class:`.ModNote` when a user has more than a hundred notes.
 - Removal reasons are now returned in the same order as they appear on Reddit.
 
-7.6.1 (2022/11/11)
-------------------
+********************
+ 7.6.1 (2022/11/11)
+********************
 
 **Changed**
 
@@ -77,8 +82,9 @@ Unreleased
 - An issue where :class:`.ModmailConversation`'s ``messages`` attribute would only
   contain the latest message.
 
-7.6.0 (2022/05/10)
-------------------
+********************
+ 7.6.0 (2022/05/10)
+********************
 
 **Added**
 
@@ -125,8 +131,9 @@ Unreleased
   alphabetically, and prevent breaking changes when adding new arguments to existing
   methods.
 
-7.5.0 (2021/11/13)
-------------------
+********************
+ 7.5.0 (2021/11/13)
+********************
 
 **Added**
 
@@ -143,8 +150,9 @@ Unreleased
 - Fixed bug where some keyword arguments that are passed to :meth:`.Draft.submit` would
   not have an effect.
 
-7.4.0 (2021/07/30)
-------------------
+********************
+ 7.4.0 (2021/07/30)
+********************
 
 **Added**
 
@@ -174,8 +182,9 @@ Unreleased
 
 - :class:`.Reddit` keyword argument ``token_manager``.
 
-7.3.0 (2021/06/17)
-------------------
+********************
+ 7.3.0 (2021/06/17)
+********************
 
 **Added**
 
@@ -213,8 +222,9 @@ Unreleased
 - Fixed bug where :meth:`~.FullnameMixin.fullname` sometimes returned the wrong
   fullname.
 
-7.2.0 (2021/02/24)
-------------------
+********************
+ 7.2.0 (2021/02/24)
+********************
 
 **Added**
 
@@ -234,30 +244,34 @@ Unreleased
   to the PRAW 8 behavior set ``praw8_raise_exception_on_me=True`` in your
   :class:`.Reddit` call.
 
-7.1.4 (2021/02/07)
-------------------
+********************
+ 7.1.4 (2021/02/07)
+********************
 
 **Fixed**
 
 - Asynchronous check will no longer fail in Python 3.6 multithreading edge cases.
 
-7.1.3 (2021/02/05)
-------------------
+********************
+ 7.1.3 (2021/02/05)
+********************
 
 **Changed**
 
 - Asynchronous check will no longer occur when in a Jupyter notebook.
 
-7.1.2 (2021/02/03)
-------------------
+********************
+ 7.1.2 (2021/02/03)
+********************
 
 **Fixed**
 
 - Asynchronous check would not work on Python 3.6 as
   :py:func:`~asyncio.get_running_loop` only exists on Python 3.7+.
 
-7.1.1 (2021/02/02)
-------------------
+********************
+ 7.1.1 (2021/02/02)
+********************
 
 **Added**
 
@@ -297,8 +311,9 @@ Unreleased
 - Some cases where streams yield the same item multiple times. This cannot be prevented
   in every case.
 
-7.1.0 (2020/06/22)
-------------------
+********************
+ 7.1.0 (2020/06/22)
+********************
 
 **Added**
 
@@ -339,8 +354,9 @@ Unreleased
 - :meth:`~.Subreddit.submit_image` and :meth:`~.Subreddit.submit_video` will throw
   :class:`.MediaPostFailed` when Reddit fails to post an image or video post.
 
-7.0.0 (2020/04/24)
-------------------
+********************
+ 7.0.0 (2020/04/24)
+********************
 
 **Added**
 
@@ -436,16 +452,18 @@ Unreleased
 - Method ``reddit.user.moderator_subreddits`` has been removed. Please use
   :meth:`.moderated` instead.
 
-6.5.1 (2020/01/07)
-------------------
+********************
+ 6.5.1 (2020/01/07)
+********************
 
 **Fixed**
 
 - Removed usages of ``NoReturn`` that caused PRAW to fail due to ``ImportError`` in
   Python ``<3.5.4`` and ``<3.6.2``.
 
-6.5.0 (2020/01/05)
-------------------
+********************
+ 6.5.0 (2020/01/05)
+********************
 
 **Added**
 
@@ -501,8 +519,9 @@ Unreleased
 - The behavior of ``APIException`` will no longer unicode-escape strings in the next
   minor release.
 
-6.4.0 (2019/09/21)
-------------------
+********************
+ 6.4.0 (2019/09/21)
+********************
 
 **Added**
 
@@ -536,16 +555,18 @@ Unreleased
 - Drop official support for Python 2.7.
 - ``Multireddit.rename()`` no longer works due to a change in the Reddit API.
 
-6.3.1 (2019/06/10)
-------------------
+********************
+ 6.3.1 (2019/06/10)
+********************
 
 **Removed**
 
 - ``SubredditListingMixin.gilded()``, as this was supposed to be removed in 6.0.0 after
   deprecation in 5.2.0.
 
-6.3.0 (2019/06/09)
-------------------
+********************
+ 6.3.0 (2019/06/09)
+********************
 
 **Added**
 
@@ -566,8 +587,9 @@ Unreleased
 - :meth:`.Reddit.info` now returns a generator instead of a list when using the ``url``
   parameter.
 
-6.2.0 (2019/05/05)
-------------------
+********************
+ 6.2.0 (2019/05/05)
+********************
 
 **Added**
 
@@ -598,16 +620,18 @@ Unreleased
 
 - Bumped minimum prawcore version to 1.0.1.
 
-6.1.1 (2019/01/29)
-------------------
+********************
+ 6.1.1 (2019/01/29)
+********************
 
 **Added**
 
 - :meth:`.SubredditFlair.set` supports parameter ``flair_template_id`` for giving a user
   redesign flair.
 
-6.1.0 (2019/01/19)
-------------------
+********************
+ 6.1.0 (2019/01/19)
+********************
 
 **Added**
 
@@ -653,8 +677,9 @@ Unreleased
 - Widgets of unknown types are parsed as :class:`.Widget`\ s rather than raising an
   exception.
 
-6.0.0 (2018/07/24)
-------------------
+********************
+ 6.0.0 (2018/07/24)
+********************
 
 **Added**
 
@@ -680,8 +705,9 @@ Unreleased
 - ``Subreddit.submissions`` as the API endpoint backing the method is no more. See
   https://www.reddit.com/r/changelog/comments/7tus5f/update_to_search_api/.
 
-5.4.0 (2018/03/27)
-------------------
+********************
+ 5.4.0 (2018/03/27)
+********************
 
 **Added**
 
@@ -712,8 +738,9 @@ Unreleased
 
 - Removed support for Python 3.3 as it is no longer supported by requests.
 
-5.3.0 (2017/12/16)
-------------------
+********************
+ 5.3.0 (2017/12/16)
+********************
 
 **Added**
 
@@ -725,8 +752,9 @@ Unreleased
 - Now raises ``prawcore.UnavailableForLegalReasons`` instead of an
   :py:class:`AssertionError` when encountering a HTTP 451 response.
 
-5.2.0 (2017/10/24)
-------------------
+********************
+ 5.2.0 (2017/10/24)
+********************
 
 **Changed**
 
@@ -743,8 +771,9 @@ Unreleased
 - Removed ``comment.permalink()`` because ``comment.permalink`` is now an attribute
   returned by Reddit.
 
-5.1.0 (2017/08/31)
-------------------
+********************
+ 5.1.0 (2017/08/31)
+********************
 
 **Added**
 
@@ -771,8 +800,9 @@ Unreleased
 - :class:`.Submission`'s ``gilded`` attribute properly returns the expected value from
   reddit.
 
-5.0.1 (2017/07/11)
-------------------
+********************
+ 5.0.1 (2017/07/11)
+********************
 
 **Fixed**
 
@@ -781,8 +811,9 @@ Unreleased
 - Lowered the average maximum delay between inactive stream checks by 4x to 16 seconds.
   It was previously 64 seconds, which was too long.
 
-5.0.0 (2017/07/04)
-------------------
+********************
+ 5.0.0 (2017/07/04)
+********************
 
 **Added**
 
@@ -824,8 +855,9 @@ Unreleased
   :meth:`.SubredditRedditorFlairTemplates.clear`. Use
   :class:`.SubredditLinkFlairTemplates` instead.
 
-4.6.0 (2017/07/04)
-------------------
+********************
+ 4.6.0 (2017/07/04)
+********************
 
 The release's sole purpose is to announce the deprecation of the ``is_link`` parameter
 as described below:
@@ -840,16 +872,18 @@ as described below:
   :meth:`.SubredditRedditorFlairTemplates.clear`. Use
   :class:`.SubredditLinkFlairTemplates` instead.
 
-4.5.1 (2017/05/07)
-------------------
+********************
+ 4.5.1 (2017/05/07)
+********************
 
 **Fixed**
 
 - Calling :meth:`.parent` works on :class:`.Comment` instances obtained via
   :meth:`.comment_replies`.
 
-4.5.0 (2017/04/29)
-------------------
+********************
+ 4.5.0 (2017/04/29)
+********************
 
 **Added**
 
@@ -894,8 +928,9 @@ as described below:
 - :class:`.Submission` attributes ``comment_limit`` and ``comment_sort`` maintain their
   values after making instances non-lazy.
 
-4.4.0 (2017/02/21)
-------------------
+********************
+ 4.4.0 (2017/02/21)
+********************
 
 **Added**
 
@@ -929,8 +964,9 @@ as described below:
   ``dest`` ``replies`` and ``subreddit`` properly converted to their appropriate PRAW
   model.
 
-4.3.0 (2017/01/19)
-------------------
+********************
+ 4.3.0 (2017/01/19)
+********************
 
 **Added**
 
@@ -962,8 +998,9 @@ as described below:
   :meth:`.ModeratorRelationship.update_invite` now always remove known unlisted
   permissions.
 
-4.2.0 (2017/01/07)
-------------------
+********************
+ 4.2.0 (2017/01/07)
+********************
 
 **Added**
 
@@ -1001,8 +1038,9 @@ as described below:
 
 - ``validate_time_filter`` is no longer part of the public interface.
 
-4.1.0 (2016/12/24)
-------------------
+********************
+ 4.1.0 (2016/12/24)
+********************
 
 **Added**
 
@@ -1061,8 +1099,9 @@ as described below:
 - Accessing an invalid attribute on an instance of :class:`.Message` will raise
   :py:class:`AttributeError` instead of :class:`.PRAWException`.
 
-4.0.0 (2016/11/29)
-------------------
+********************
+ 4.0.0 (2016/11/29)
+********************
 
 **Fixed**
 
@@ -1074,8 +1113,9 @@ as described below:
   saved in lower case and non-lower case page names results in a Redirect exception
   (thanks pcjonathan).
 
-4.0.0rc3 (2016/11/26)
----------------------
+***********************
+ 4.0.0rc3 (2016/11/26)
+***********************
 
 **Added**
 
@@ -1085,16 +1125,18 @@ as described below:
 - :meth:`.scopes` to discover which scopes are available to the current authentication
 - Lots of documentation: https://praw.readthedocs.io/
 
-4.0.0rc2 (2016/11/20)
----------------------
+***********************
+ 4.0.0rc2 (2016/11/20)
+***********************
 
 **Fixed**
 
 - :meth:`.Auth.authorize` properly sets the session's Authentication (thanks
   @williammck).
 
-4.0.0rc1 (2016/11/20)
----------------------
+***********************
+ 4.0.0rc1 (2016/11/20)
+***********************
 
 PRAW 4 introduces significant breaking changes. The numerous changes are not listed
 here, only the feature removals. Please read through :doc:`/getting_started/quick_start`
