@@ -1,5 +1,6 @@
-Sponsors
-========
+##########
+ Sponsors
+##########
 
 .. image:: NucleiLogo.png
     :alt: Nuclei

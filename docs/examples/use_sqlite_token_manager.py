@@ -22,6 +22,7 @@ Usage:
     python3 use_sqlite_token_manager.py TOKEN_KEY
 
 """
+
 import os
 import sys
 

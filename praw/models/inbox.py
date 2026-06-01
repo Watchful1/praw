@@ -1,4 +1,5 @@
 """Provide the Front class."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterator
@@ -197,7 +198,7 @@ class Inbox(PRAWBase):
             message.fullname: message for message in [listing[0]] + listing[0].replies
         }
         for _fullname, message in messages.items():
-            message.parent = messages.get(message.parent_id, None)
+            message.parent = messages.get(message.parent_id)
         return messages[f"t4_{message_id.lower()}"]
 
     def messages(

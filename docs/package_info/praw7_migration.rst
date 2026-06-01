@@ -1,8 +1,10 @@
-Migrating to PRAW 7.X
-=====================
+#######################
+ Migrating to PRAW 7.X
+#######################
 
-Exception Handling
-------------------
+********************
+ Exception Handling
+********************
 
 .. _exception_handling:
 
